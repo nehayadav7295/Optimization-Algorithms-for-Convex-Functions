@@ -85,11 +85,6 @@ class Optimization:
     def gradient_descent(self, X, y, par,eta,iter):
         pass
     
-    def b_gradient_descent(self, alpha, x, y, numIterations):
-        pass
-
-    def conj_grad(self, x,A,b,c, min_iter, tol):
-        pass    
     
     def particle_Swarm(self, func, initial, bound, particles, max_iter):
         pass
@@ -140,5 +135,160 @@ if __name__ == "__main__":
     x = Optimization(lambda x: 2*x)
     print(x.plot())
     
+#---------------------------------------------Optimization using Batch Gradient Method----------------------------------------------------------------------------------------------------
 
+import matplotlib.pyplot as plt  #importing matplot for plotting
+import numpy as np            #counts the number of observations per category
+from scipy import stats 
+from sklearn.datasets.samples_generator import make_regression
+
+#creating a simple dataset containing one feature and one target column which is continuos in nature(regression problem)
+X, y = make_regression(n_samples = 10000, 
+                       n_features=1, 
+                       n_informative=1, 
+                       noise=20,
+                       random_state=2000)
+
+#Step 1 (Finding the slope and the intercept) using linregress 
+x = X.flatten()
+slope, intercept,_,_,_ = stats.linregress(x,y)
+print (slope)
+print (intercept)
+
+#Reach the slope and intercept using batch gradient descent method.
+
+y = y.reshape(-1,1) #making it into a two dimensional array
+
+#cost function
+def cost_function(theta,X,y):
+    """
+    Function: Calculates the cost
+    param theta: theta value
+    X: slope
+    y: intercept
+    returns: cost function
+    """
+    m = len(y)
+    predict = X.dot(theta)
+    cost = (1/2*m) * np.sum(np.square(predict-y))
+    return cost
+
+#Batch Gradient method function
+def batch_gradient_descent(X, y, theta, learning_rate=0.01, iterations=100):
+    """
+    Function to optimize the cost value using batch gradient descent method
+    param X : Slope
+    param Y : Intercept
+    learning_rate : 0.01
+    iterations : 100
+    Returns: theta, cost_history, theta_history
+
+    """
+    m = len(y)
+    cost_history = np.zeros(iterations)
+    theta_history = np.zeros((iterations, 2))
+    for it in range(iterations):
+        prediction = np.dot(X, theta)
+        theta = theta - (1 / m) * learning_rate * (X.T.dot((prediction - y)))
+        theta_history[it, :] = theta.T
+        cost_history[it] = cost_function(theta, X, y)
+    return theta, cost_history, theta_history
+
+
+#taking 1000 iterations and a learning rate of 0.05
+lr = 0.05
+n_iter = 1000
+theta = np.random.randn(2, 1)
+X_b = np.c_[np.ones((len(X), 1)), X]
+theta, cost_history, theta_history = batch_gradient_descent(X_b, y, theta, lr, n_iter)
+print("theta0: {:0.2f},\n theta1:{:0.2f}".format(theta[0][0], theta[1][0]))
+print("Final Cost Value/MSE:  {:0.2f}".format(cost_history[-1]))
+
+#plotting the graph
+fig,ax = plt.subplots(figsize=(10,6))
+ax.set_ylabel('Theta(J)')
+ax.set_xlabel('Iterations')
+_=ax.plot(range(n_iter),cost_history,'b.')
+
+#-----------------------------------------------Optimization using Conjugate Gradient method----------------------------------------------------------------------------------------------------------------   
+
+#Conjugate Gradient Method of optimization
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+#creating a plot function
+def plot_iterations(f, iterations, delta=0.1, box=1):
+  
+    a = np.arange(-box, +box, delta)
+    b = np.arange(-box, +box, delta)
+    X, Y = np.meshgrid(a, b)
+    
+    #Creating a function mesh
+    Z = np.array([[f(np.array([x, y])) for x in a] for y in b])
+    
+    #creating a contour plot
+    fig = plt.figure(figsize=(10, 5))
+    jx = fig.add_subplot(1, 2, 1)
+    cd = jx.contour(X, Y, Z)
+    
+    
+    # error plot
+    jx.clabel(cd, inline=1, fontsize=10)
+    jx.plot(iterations[:, 0], iterations[:, 1], color='blue', marker='x', label='opt')
+    jx = fig.add_subplot(1, 2, 2)
+    jx.plot(range(len(iterations)), [f(np.array(step)) for step in iterations], 'xb-')
+    jx.grid('on')
+    jx.set_xlabel('iteration')
+    jx.set_xticks(range(len(iterations)))
+    jx.set_ylabel('f(x)')
+  
+#specifying a callback function between iterations.Function will be called back after each iteration
+def call_back(data_list):
+    """
+    Function: Calling back function between iterations
+    param data_list
+    return: the called back function
+    """
+    def callback_function(x):
+        data_list.append(x)
+    return callback_function
+
+#specifying a function to minimize f(x) = 9x^2 + 7y^2
+
+f1 = lambda x: x.T.dot(np.diag([9,7])).dot(x)
+
+#first and second-order characterizations
+
+#function for jacobian vector for the first partial derivative
+def df1(x):
+    """
+    Function: first partial derivative
+    param x
+    """
+    return (np.diag([9,7]) + np.diag([9,7]).T).dot(x)
+
+#function for the hessian matrix of the second partial derivative
+
+def df2(x):
+    """
+    Function: second partial derivative 
+    param x
+    """
+    return np.diag([18,14])
+
+#conjugate gradient method
+
+x0= [-1,1]
+cg_data=[np.array(x0)]
+from scipy.optimize import fmin_cg
+res = fmin_cg(f1,x0,fprime=df1, callback=call_back(cg_data))
+
+#plotting
+plot_iterations(f1, np.array(cg_data))
+
+        
+    
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
