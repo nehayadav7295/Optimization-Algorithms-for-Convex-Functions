@@ -36,6 +36,10 @@ The package consist of following files:
    A callback function is defined. This function will be called after each iteration. 
    An initial point to start is specified and conjugate gradient method from scipy.optimize library is imported.The iterations are plot using a plot.iteration          function.
    
+   Sample X Value= random.rand(100)
+
+   Sample Y Functions: (y=-X**3), (y=X**2+X), (y=2*X+1),(y=X**5+X+1),(y=-X**5-1)
+   
 
 
     
