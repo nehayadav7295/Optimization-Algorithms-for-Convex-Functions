@@ -21,8 +21,7 @@ The package consist of following files:
     x1 = Optimization(x**3+x+3, Upper_bound=10, Lower_bound=-14, Max_iter=100)
     print(x1.plot())
     
-    Note: By reducting the golden search coefficient we can increase the performance of GSS
-    By 
+    
 3. Batch_gradient.py : In batch gradient a simple data set is created with one feature and one target column which is continuous in nature(regression). This will be    the input.Slope and the intercept is found for the data using linregress from sklearn package. We reach the slope and the intercept value using batch gradient      descent method.
 
    The cost function which is the difference between the predicted and the original value is returned. Furthermore, the weights are adjusted accordingly to reach      the optimal value and the cost function is minimized. We use the new weights for prediction and to calculate the new cost. The calculation of the gradient and      the weight update till further adjustments to the weight do not reduce significantly. 
