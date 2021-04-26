@@ -31,6 +31,8 @@ The package consist of following files:
 
 4. Conjugate_Gradient_Method.py : Conjugate gradient method is used when the function to be minimized is smooth. Here, the function is optimized incrementally in an    iterative procedure. We start by specifying a function to be minimized (f1).For a smooth functioned to be minimized we have to take Jacobian vector of partial      derivates and for the hessian matrix which is implemented in df1 and df2 respectively. 
 
+5. GD_CD_BGD.py: It contains a Gradient_Optimization() class which includes optimization methods for Gradient Descent, Coordinate Descent and Batch Gradient            Descent. All the algorithms are used to optimize input function Y(X**2) which are randomly generated for each runtime. A method Cost-Function is used to            calculate the cost function which is minimized at each iteration. The theta value and minimum cost value is returned by each algorithm and is compared by            graphically representing it. The time taken by each algorithm for optimization is also displayed.
+
    A callback function is defined. This function will be called after each iteration. 
    An initial point to start is specified and conjugate gradient method from scipy.optimize library is imported.The iterations are plot using a plot.iteration          function.
    
