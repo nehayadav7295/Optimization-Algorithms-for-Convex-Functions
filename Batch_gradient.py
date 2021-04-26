@@ -81,4 +81,4 @@ _=ax.plot(range(n_iter),cost_history,'b.')
 
 end = time.time()
 
-print(f"running time of batch_gradient method is{end to start}")
+print(f"running time of batch_gradient method is{end-start}")
