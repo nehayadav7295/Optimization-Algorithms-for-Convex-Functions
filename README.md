@@ -21,6 +21,23 @@ The package consist of following files:
     x1 = Optimization(x**3+x+3, Upper_bound=10, Lower_bound=-14, Max_iter=100)
     print(x1.plot())
     
+    Note: By reducting the golden search coefficient we can increase the performance of GSS
+    By 
+3. Batch_gradient.py : In batch gradient a simple data set is created with one feature and one target column which is continuous in nature(regression). This will be    the input.Slope and the intercept is found for the data using linregress from sklearn package. We reach the slope and the intercept value using batch gradient      descent method.
+
+   The cost function which is the difference between the predicted and the original value is returned. Furthermore, the weights are adjusted accordingly to reach      the optimal value and the cost function is minimized. We use the new weights for prediction and to calculate the new cost. The calculation of the gradient and      the weight update till further adjustments to the weight do not reduce significantly. 
+
+   We run by starting 1000 iterations with a learning rate of 0.05. We reach at an intercept value of(theta0) and a slope value of (theta1) with the final cost        function value. 
+   A graph is plotted of the cost_history over iterations which shows the converged point.
+
+4. Conjugate_Gradient_Method.py : Conjugate gradient method is used when the function to be minimized is smooth. Here, the function is optimized incrementally in an    iterative procedure. We start by specifying a function to be minimized (f1).For a smooth functioned to be minimized we have to take Jacobian vector of partial      derivates and for the hessian matrix which is implemented in df1 and df2 respectively. 
+
+   A callback function is defined. This function will be called after each iteration. 
+   An initial point to start is specified and conjugate gradient method from scipy.optimize library is imported.The iterations are plot using a plot.iteration          function.
+   
+
+
+    
     
     
  
